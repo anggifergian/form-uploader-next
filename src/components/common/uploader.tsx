@@ -70,10 +70,10 @@ export function Uploader() {
       />
 
       <div
-        className="border border-dashed overflow-hidden min-h-60 rounded-lg group/uploader relative bg-gray-50"
+        className="border border-dashed overflow-hidden min-h-60 rounded-lg group/uploader relative bg-dropzone"
         onClick={handleOpenFile}
       >
-        <div className="absolute inset-0 z-50 flex-1 flex flex-col gap-2 justify-center items-center p-4 pointer-events-none cursor-grab transition-all ease-in-out duration-500 group-hover/uploader:bg-gray-800/10 group-hover/uploader:backdrop-blur-xs">
+        <div className="absolute inset-0 z-50 flex-1 flex flex-col gap-2 justify-center items-center p-4 pointer-events-none cursor-grab transition-all ease-in-out duration-500 group-hover/uploader:bg-gray-800/10 dark:group-hover/uploader:bg-gray-800/50 group-hover/uploader:backdrop-blur-xs">
           <Upload className="size-4 text-muted-foreground" />
 
           <div className="grid text-center">
