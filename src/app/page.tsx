@@ -11,8 +11,7 @@ export default function Home() {
         <div className="grid gap-0.5">
           <h2 className="text-xl font-bold">Form Uploader</h2>
           <p className="text-muted-foreground text-sm">
-            A simple file uploader project built for the DevDifferent technical
-            test
+            A simple file uploader project
           </p>
         </div>
         <Button asChild>
