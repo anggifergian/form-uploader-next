@@ -107,9 +107,14 @@ export function Gallery() {
             </div>
 
             <div className="p-4 pt-6 grid gap-4">
-              <p className="text-sm overflow-hidden [display:-webkit-box] [-webkit-line-clamp:2] [-webkit-box-orient:vertical]">
+              <a
+                href={item.downloadUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-sm overflow-hidden [display:-webkit-box] [-webkit-line-clamp:2] [-webkit-box-orient:vertical] underline"
+              >
                 {item.filename}
-              </p>
+              </a>
 
               <div className="flex justify-between items-center gap-2">
                 <p className="text-xs text-muted-foreground">
