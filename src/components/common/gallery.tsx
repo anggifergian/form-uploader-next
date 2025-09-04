@@ -4,12 +4,20 @@ import { Trash, Upload } from 'lucide-react';
 import dynamic from 'next/dynamic';
 import Link from 'next/link';
 import useSWR from 'swr';
+import { useState } from 'react';
 
 import { Button } from '@/components/ui/button';
 import Skeleton from '@/components/ui/skeleton';
 import { environment } from '@/libs/env-config';
 import { fetcher } from '@/libs/fetcher';
 import { formatDate } from '@/libs/date-parser';
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@/components/ui/select';
 
 const Image = dynamic(() => import('@/components/ui/image'), {
   ssr: false,
@@ -17,7 +25,14 @@ const Image = dynamic(() => import('@/components/ui/image'), {
 });
 
 export function Gallery() {
-  const { data, mutate } = useSWR(`${environment.apiUrl}/dms/get-all`, fetcher);
+  const [filter, setFilter] = useState({ sortOrder: 'desc' });
+
+  const query = new URLSearchParams(filter).toString();
+
+  const { data, mutate } = useSWR(
+    `${environment.apiUrl}/dms/get-all?${query}`,
+    fetcher
+  );
 
   const handleRemove = async (fileId: string) => {
     try {
@@ -54,39 +69,61 @@ export function Gallery() {
   }
 
   return (
-    <div className="grid gap-3 sm:grid-cols-2 xl:grid-cols-3">
-      {listImages.map((item: any) => (
-        <div
-          key={item.fileId}
-          className="relative border z-10 overflow-hidden rounded-xl group/image"
+    <>
+      <div className="flex items-center justify-end gap-2 pb-4">
+        <label htmlFor="sortOrder" className="text-sm text-muted-foreground">
+          Sort by
+        </label>
+        <Select
+          value={filter.sortOrder}
+          onValueChange={(value) =>
+            setFilter((prev) => ({ ...prev, sortOrder: value }))
+          }
         >
-          <div className="w-full h-48 relative">
-            <Image
-              fill
-              alt={item.filename}
-              src={item.downloadUrl}
-              className="object-cover group-hover/image:scale-105 transition-all ease-in-out duration-300"
-              loading="lazy"
-            />
-          </div>
+          <SelectTrigger id="sortOrder" name="sortOrder">
+            <SelectValue placeholder="Select" />
+          </SelectTrigger>
+          <SelectContent>
+            <SelectItem value="desc">Newest</SelectItem>
+            <SelectItem value="asc">Oldest</SelectItem>
+          </SelectContent>
+        </Select>
+      </div>
 
-          <div className="p-4 pt-6 grid gap-4">
-            <p className="text-sm overflow-hidden [display:-webkit-box] [-webkit-line-clamp:2] [-webkit-box-orient:vertical]">
-              {item.filename}
-            </p>
+      <div className="grid gap-3 sm:grid-cols-2 xl:grid-cols-3">
+        {listImages.map((item: any) => (
+          <div
+            key={item.fileId}
+            className="relative border z-10 overflow-hidden rounded-xl group/image"
+          >
+            <div className="w-full h-48 relative">
+              <Image
+                fill
+                alt={item.filename}
+                src={item.downloadUrl}
+                className="object-cover group-hover/image:scale-105 transition-all ease-in-out duration-300"
+                loading="lazy"
+              />
+            </div>
 
-            <div className="flex justify-between items-center gap-2">
-              <p className="text-xs text-muted-foreground">
-                {formatDate(item.uploadDate)}
+            <div className="p-4 pt-6 grid gap-4">
+              <p className="text-sm overflow-hidden [display:-webkit-box] [-webkit-line-clamp:2] [-webkit-box-orient:vertical]">
+                {item.filename}
               </p>
 
-              <Button size="icon" onClick={() => handleRemove(item.fileId)}>
-                <Trash className="size-3.5 text-muted-foreground" />
-              </Button>
+              <div className="flex justify-between items-center gap-2">
+                <p className="text-xs text-muted-foreground">
+                  {formatDate(item.uploadDate)}
+                </p>
+
+                <Button size="icon" onClick={() => handleRemove(item.fileId)}>
+                  <Trash className="size-3.5 text-muted-foreground" />
+                </Button>
+              </div>
             </div>
           </div>
-        </div>
-      ))}
-    </div>
+        ))}
+      </div>
+    </>
   );
 }
