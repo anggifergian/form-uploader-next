@@ -10,6 +10,7 @@
   --muted: oklch(0.97 0 0);
   --muted-foreground: oklch(0.556 0 0);
   --dropzone: oklch(0.985 0.002 247.839);
+  --popover: #ffffff;
 }
 
 @media (prefers-color-scheme: light) {
@@ -23,6 +24,7 @@
     --muted: oklch(0.278 0.033 256.848);
     --muted-foreground: oklch(0.707 0.022 261.325);
     --dropzone: oklch(0.21 0.034 264.665);
+    --popover: oklch(0.278 0.033 256.848);
   }
 }
 
@@ -37,6 +39,7 @@
   --color-muted: var(--muted);
   --color-muted-foreground: var(--muted-foreground);
   --color-dropzone: var(--dropzone);
+  --color-popover: var(--popover);
 }
 
 @layer base {
